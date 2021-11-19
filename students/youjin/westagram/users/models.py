@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models.fields import BooleanField
-# from django.db.models.fields import BooleanField
 
 class User(models.Model):
     name         = models.CharField(max_length=50)
@@ -9,6 +7,8 @@ class User(models.Model):
     phone_number = models.PhoneNumberField(unique=True)
     gender       = models.CharField(max_length=50)
     sns          = models.BooleanField()
+    create_date  = models.DateTimeField(auto_now_add=True)
+    update_date  = models.DateTimeField(auto_now=True) 
 
     class Meta:
         db_table = 'users'
