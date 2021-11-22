@@ -10,44 +10,27 @@ class SignUpView(View):
     def post(self, request):
         try:
             data           = json.loads(request.body)    
-            name           = data['name']
-            email          = data['email']
-            password       = data['password']
-            phone_number   = data['phone_number'] 
-            email_match    = re.compile('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$')
-            password_match = re.compile('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$')
-            if email_match.match(email) == None:
+            user_name           = data['name']
+            user_email          = data['email']
+            user_password       = data['password']
+            user_phone_number   = data['phone_number'] 
+
+            if re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_password) == None:
                 return JsonResponse({"MESSAGE" : "EMAIL_ERROR"}, status=400)
-            if password_match.match(password) == None:
-                return JsonResponse({"MESSAGE" : "PASSWORD_ERROR"}, status=400)          
+
+            if re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password) == None:
+                return JsonResponse({"MESSAGE" : "PASSWORD_ERROR"}, status=400)
+
             User.objects.create(
-                name         = name,
-                email        = email,
-                password     = password,
-                phone_number = phone_number,
+                name         = user_name,
+                email        = user_email,
+                password     = user_password,
+                phone_number = user_phone_number,
             )
             return JsonResponse({"message": "SUCCESS"}, status=201)
+
         except KeyError:
             return JsonResponse({"MESSAGE" : "KEY_ERROR"}, status=400)
+            
         except IntegrityError:
             return JsonResponse({"MESSAGE" : "IntegrityError"}, status=400)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
