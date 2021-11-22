@@ -12,9 +12,9 @@ class SignUpView(View):
             user_name           = data['name']
             user_email          = data['email']
             user_password       = data['password']
-            user_phone_number   = data['phone_number'] 
+            user_phone_number   = data['phone_number']
 
-            if User.objects.filter(email=user_email):
+            if User.objects.filter(email=user_email).exists():
                 return JsonResponse({"MESSAGE" : "중복된 이메일 존재합니다."}, status=400)   
 
             if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):
