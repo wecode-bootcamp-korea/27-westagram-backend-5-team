@@ -10,15 +10,15 @@ class SignupView(View):
         try:
             data = json.loads(request.body)
 
-            name                = data['name']
-            email               = data['email']
-            password            = data['password']
-            phone_number        = data['phone_number']       
-            self_introduction   = data['self_introduction']
-            gender              = data['gender']
+            name                 = data['name']
+            email                = data['email']
+            password             = data['password']
+            phone_number         = data['phone_number']       
+            self_introduction    = data['self_introduction']
+            gender               = data['gender']
 
-            email_regex         = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-            password_regex      = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$"
+            email_regex          = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+            password_regex       = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$"
 
             if not re.match(email_regex, email):
                 return JsonResponse({"MESSAGE": "INVALID_EMAIL"}, status = 400)
