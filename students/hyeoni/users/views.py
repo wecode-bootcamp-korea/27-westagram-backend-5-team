@@ -15,10 +15,10 @@ class SignUpView(View):
             user_password       = data['password']
             user_phone_number   = data['phone_number'] 
 
-            if re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_password) == None:
+            if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):
                 return JsonResponse({"MESSAGE" : "EMAIL_ERROR"}, status=400)
 
-            if re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password) == None:
+            if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"MESSAGE" : "PASSWORD_ERROR"}, status=400)
 
             User.objects.create(
@@ -31,6 +31,6 @@ class SignUpView(View):
 
         except KeyError:
             return JsonResponse({"MESSAGE" : "KEY_ERROR"}, status=400)
-            
+
         except IntegrityError:
             return JsonResponse({"MESSAGE" : "IntegrityError"}, status=400)
