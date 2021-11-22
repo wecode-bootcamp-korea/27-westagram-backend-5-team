@@ -17,13 +17,13 @@ class UserView(View):
         user_sns          = data['sns']
 
         try:
-            if re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):  
+            if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):  
                 return JsonResponse({"message": "EMAIL_ERROR"}, status=400)
             
             if User.objects.filter(email=user_email).exists():
                 return JsonResponse({"message" : "이미 존재하는 이메일입니다. 이메일을 다시 입력해주세요."}, status=400)
             
-            if re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
+            if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"message": "PASSWORD_ERROR"}, status=400)
 
             users = User.objects.create(
@@ -35,5 +35,6 @@ class UserView(View):
                 sns          = user_sns,
             )
             return JsonResponse({"message": "SUCCESS"}, status=201)
-        except:
+            
+        except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
