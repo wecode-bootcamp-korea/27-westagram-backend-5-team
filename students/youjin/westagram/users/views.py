@@ -37,3 +37,20 @@ class UserView(View):
             
         except KeyError:
             return JsonResponse({"message": "KEY_ERROR"}, status=400)
+
+class LoginView(View):
+    def POST(self, request):
+        try:
+            data           = json.load(request.body)
+            user_email     = data['email']
+            user_password  = data['password']
+                
+            # 계정(이메일) 잘못 입력한 경우 or 비번 잘못 입력한 경우
+            if not User.objects.filter(email = user_email, password = user_password).exists():
+                return JsonResponse({"message" : "INVALID_USER"}, status=401)        
+
+            # 로그인 성공 로직:
+            return JsonResponse({"message": "SUCCESS"}, status=200)
+            
+        except KeyError:
+            return JsonResponse({"message" : "KEY_ERROR"}, status=400)
