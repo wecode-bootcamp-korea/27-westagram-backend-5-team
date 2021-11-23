@@ -21,7 +21,7 @@ class UserView(View):
                 return JsonResponse({"message": "EMAIL_ERROR"}, status=400)
             
             if User.objects.filter(email=user_email).exists():
-                return JsonResponse({"message" : "이미 존재하는 이메일입니다. 이메일을 다시 입력해주세요."}, status=400)
+                return JsonResponse({"message" : "email_alreay_exists"}, status=400)
             
             if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"message": "PASSWORD_ERROR"}, status=400)
