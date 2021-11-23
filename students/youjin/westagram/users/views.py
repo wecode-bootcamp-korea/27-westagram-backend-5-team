@@ -1,22 +1,21 @@
+import json, re
+
 from django.http  import JsonResponse
 from django.views import View
 
 from .models import User
 
-import json
-import re
-
 class UserView(View):
     def post(self, request):
-        data              = json.loads(request.body)
-        user_name         = data['name']
-        user_email        = data['email']
-        user_password     = data['password']
-        user_phone_number = data['phone_number']
-        user_gender       = data['gender']
-        user_sns          = data['sns']
-
         try:
+            data              = json.loads(request.body)
+            user_name         = data['name']
+            user_email        = data['email']
+            user_password     = data['password']
+            user_phone_number = data['phone_number']
+            user_gender       = data['gender']
+            user_sns          = data['sns']
+
             if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):  
                 return JsonResponse({"message": "EMAIL_ERROR"}, status=400)
             
