@@ -25,13 +25,13 @@ class UserView(View):
             if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"message": "PASSWORD_ERROR"}, status=400)
 
-            users = User.objects.create(
+            User.objects.create(
                 name         = user_name,    
                 email        = user_email,
                 password     = user_password,
                 phone_number = user_phone_number,
                 gender       = user_gender,
-                sns          = user_sns,
+                sns          = user_sns
             )
             return JsonResponse({"message": "SUCCESS"}, status=201)
             
