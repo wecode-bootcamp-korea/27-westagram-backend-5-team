@@ -1,4 +1,4 @@
-import re, json
+import re, json, bcrypt
 
 from django.http  import JsonResponse
 from django.views import View
@@ -22,11 +22,15 @@ class SignUpView(View):
 
             if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"MESSAGE" : "PASSWORD_ERROR"}, status=400)
+            
+            encoded_password = user_password.encode('utf-8')
+            salt_password = bcrypt.hashpw( encoded_password , bcrypt.gensalt())
+            
 
             User.objects.create(
                 name         = user_name,
                 email        = user_email,
-                password     = user_password,
+                password     = salt_password.decode('utf-8'),
                 phone_number = user_phone_number,
             )
             return JsonResponse({"message": "SUCCESS"}, status=201)
