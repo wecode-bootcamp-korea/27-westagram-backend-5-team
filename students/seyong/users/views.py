@@ -1,6 +1,6 @@
 import json, re
 
-from django.http  import JsonResponse, request
+from django.http  import JsonResponse
 
 from django.views import View
 from users.models  import User
