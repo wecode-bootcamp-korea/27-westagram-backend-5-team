@@ -23,12 +23,12 @@ class SignUpView(View):
             if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"MESSAGE" : "PASSWORD_ERROR"}, status=400)
             
-            salt_password = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-            
+            hashed_password = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
             User.objects.create(
                 name         = user_name,
                 email        = user_email,
-                password     = salt_password,
+                password     = hashed_password,
                 phone_number = user_phone_number,
             )
             return JsonResponse({"message": "SUCCESS"}, status=201)
