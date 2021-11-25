@@ -1,4 +1,4 @@
-import json, re
+import json, re, bcrypt
 
 from django.http  import JsonResponse
 from django.views import View
@@ -16,19 +16,21 @@ class SignUpView(View):
             user_gender       = data['gender']
             user_sns          = data['sns']
 
-            if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email):  
+            if not re.match('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$', user_email): 
                 return JsonResponse({"message": "EMAIL_ERROR"}, status=400)
             
             if User.objects.filter(email=user_email).exists():
-                return JsonResponse({"message" : "email_alreay_exists"}, status=400)
+                return JsonResponse({"message" : "EMAIL_ALREAY_EXISTS"}, status=400)
             
             if not re.match('^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', user_password):
                 return JsonResponse({"message": "PASSWORD_ERROR"}, status=400)
+            
+            hashed_password = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
             User.objects.create(
                 name         = user_name,    
                 email        = user_email,
-                password     = user_password,
+                password     = hashed_password,
                 phone_number = user_phone_number,
                 gender       = user_gender,
                 sns          = user_sns
