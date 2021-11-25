@@ -40,13 +40,12 @@ class SignUpView(View):
 class LoginView(View):
     def post(self, request):
         try:
-            data                 = json.loads(request.body)
-            user_email          = data['email']
-            user_password      = data['password']
+            data              = json.loads(request.body)
+            user_email        = data['email']
+            user_password     = data['password']
             user_jwt          = User.objects.get(email=user_email) #한줄
 
             if bcrypt.checkpw(user_password.encode('utf-8'), user_jwt.password.encode('utf-8')): 
-
                 token = jwt.encode ({'id':user_jwt.id}, SECRET_KEY, algorithm=ALGORITHM)
                 return token
                 
