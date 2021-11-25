@@ -16,5 +16,5 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('singup', include('users.urls.py'))
+    path('users', include('users.urls'))
 ]
